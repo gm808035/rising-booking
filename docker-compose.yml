@@ -1,0 +1,115 @@
+version: "3"
+services:
+  db:
+    container_name: db
+    image: mysql:5.7
+    platform: linux/amd64
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: database
+      MYSQL_USER: mysqluser
+      MYSQL_PASSWORD: mysqlpassword
+      MYSQL_ROOT_PASSWORD: mysqlrootpassword
+    healthcheck:
+      test: mysqladmin ping --password=mysqlrootpassword
+      interval: 10s
+      timeout: 2s
+      retries: 10
+    ports:
+      - 3306:3306
+
+  sqs:
+    container_name: sqs
+    image: mockserver/mockserver
+    command: -logLevel WARN -serverPort 1080
+    ports:
+      - 1080:1080
+
+  eventbridge:
+    container_name: eventbridge
+    image: mockserver/mockserver
+    command: -logLevel WARN -serverPort 1081
+    ports:
+      - 1081:1081
+
+  dynamodb:
+    container_name: dynamodb
+    image: amazon/dynamodb-local
+    ports:
+      - 8000:8000
+    command: "-jar DynamoDBLocal.jar -sharedDb -dbPath ."
+    healthcheck:
+      test: java -version
+      interval: 10s
+      timeout: 2s
+      retries: 10
+
+  api:
+    container_name: api
+    build: .
+    tty: true
+    ports:
+      - "3000:3000"
+      - "3002:3002"
+    environment:
+      LOG_LEVEL: debug
+      DB_HOST: db
+      DB_READER_HOST: db
+      DB_DATABASE: database-1
+      DB_USERNAME: admin
+      DB_PASSWORD: adminpassword
+      DEBUG: "sequelize:*"
+    volumes:
+      - ./:/home/node/app:cached
+    command: sh -c '
+      npm run db:migrate:undo &&
+      npm run db:migrate &&
+      yarn sequelize-cli db:seed:undo:all &&
+      yarn sequelize-cli db:seed:all &&
+      yarn sls config credentials --overwrite --provider aws --key KEY --secret SECRET &&
+      npm start'
+    healthcheck:
+      test: curl --fail http://localhost:3000/dev/pong || exit 1
+      interval: 15s
+      timeout: 2s
+      retries: 10
+    depends_on:
+      db:
+        condition: service_healthy
+
+  awscli:
+    container_name: awscli
+    image: amazon/aws-cli
+    environment:
+      AWS_ACCESS_KEY_ID: KEY
+      AWS_SECRET_ACCESS_KEY: SECRET
+      AWS_REGION: eu-west-2
+    entrypoint: /bin/sh
+    command: -c '
+      aws --version &&
+      aws dynamodb --endpoint-url http://dynamodb:8000
+      create-table --table-name email_content
+      --attribute-definitions AttributeName=id,AttributeType=S
+      --key-schema AttributeName=id,KeyType=HASH
+      --provisioned-throughput ReadCapacityUnits=5,WriteCapacityUnits=5 &&
+      aws lambda invoke /dev/null --endpoint-url http://api:3002 --function-name toca-booking-api-dev-clearReservedBookings &&
+
+      aws lambda invoke /dev/null --endpoint-url http://api:3002 --function-name toca-booking-api-dev-bookingEventsPublisher &&
+      aws lambda invoke /dev/null --endpoint-url http://api:3002 --function-name toca-booking-api-dev-sendReminderEmails &&
+      aws lambda invoke /dev/null --endpoint-url http://api:3002 --function-name toca-booking-api-dev-getBookingPrice
+      --payload $$(echo -n "\"get-booking-price\"" | base64) &&
+      aws lambda invoke /dev/null --endpoint-url http://api:3002 --function-name toca-booking-api-dev-confirmBooking
+      --payload $$(echo -n "\"confirm-booking\"" | base64) &&
+      aws lambda invoke /dev/null --endpoint-url http://api:3002 --function-name toca-booking-api-dev-confirmBooking
+      --payload $$(echo -n "\"confirm-booking-90m\"" | base64) &&
+      aws lambda invoke /dev/null --endpoint-url http://api:3002 --function-name toca-booking-api-dev-confirmBooking
+      --payload $$(echo -n "\"confirm-booking-off-peak\"" | base64) &&
+      aws lambda invoke /dev/null --endpoint-url http://api:3002 --function-name toca-booking-api-dev-confirmBooking
+      --payload $$(echo -n "\"confirm-booking-bst-2022\"" | base64) &&
+      aws lambda invoke /dev/null --endpoint-url http://api:3002 --function-name toca-booking-api-dev-confirmBooking
+      --payload $$(echo -n "\"walkin-confirmed-booking\"" | base64) &&
+      aws lambda invoke /dev/null --endpoint-url http://api:3002 --function-name toca-booking-api-dev-cancelBooking
+      --payload $$(echo -n "\"cancel-booking\"" | base64)'
+    depends_on:
+      api:
+        condition: service_healthy

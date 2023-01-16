@@ -1,0 +1,34 @@
+config:
+  target: "http://localhost:3000/dev"
+  phases:
+    - duration: 60
+      arrivalRate: 10
+  environments:
+    dev:
+      target: "https://booking.api.dev.toca.social"
+      phases:
+        - duration: 60
+          arrivalRate: 5
+          name: Warm up
+        - duration: 120
+          arrivalRate: 5
+          rampTo: 50
+          name: Ramp up load
+        - duration: 600
+          arrivalRate: 50
+          name: Sustained load
+
+scenarios:
+  - flow:
+      - get:
+          url: "/venues"
+          headers:
+            X-API-Key: "QTaUxiNdVmXQysGHtA6H6CXctUONCrp3PrvyHBBj"
+      - get:
+          url: "/availability/range/test-venue/2021-01-01/2021-01-31/60"
+          headers:
+            X-API-Key: "QTaUxiNdVmXQysGHtA6H6CXctUONCrp3PrvyHBBj"
+      - get:
+          url: "/availability/test-venue/2021-01-05/60"
+          headers:
+            X-API-Key: "QTaUxiNdVmXQysGHtA6H6CXctUONCrp3PrvyHBBj"

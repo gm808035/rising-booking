@@ -1,0 +1,107 @@
+{
+  "name": "toca-booking-api",
+  "version": "1.0.0",
+  "description": "TOCA Booking API",
+  "main": "index.js",
+  "scripts": {
+    "start": "sls offline",
+    "lint": "eslint .",
+    "test": "jest --ci",
+    "db:migrate": "sequelize-cli db:migrate",
+    "db:migrate:undo": "sequelize-cli db:migrate:undo:all",
+    "db:seed:o2": "sequelize-cli db:seed --seed 2-lon-o2.js",
+    "db:seed:o2:undo": "sequelize-cli db:seed:undo --seed 2-lon-o2.js",
+    "db:seed:o2:boxsections": "sequelize-cli db:seed --seed 3-lon-o2-boxsections.js",
+    "db:seed:o2:boxsections:undo": "sequelize-cli db:seed:undo --seed 3-lon-o2-boxsections.js",
+    "db:seed:o2:updatelaunch": "sequelize-cli db:seed --seed 5-lon-o2-update-launch.js",
+    "db:seed:o2:updatelaunch:undo": "sequelize-cli db:seed:undo --seed 5-lon-o2-update-launch.js",
+    "db:seed:o2:updatelaunch2": "sequelize-cli db:seed --seed 6-lon-o2-update-launch.js",
+    "db:seed:o2:updatelaunch2:undo": "sequelize-cli db:seed:undo --seed 6-lon-o2-update-launch.js",
+    "db:seed:o2:updated:weekend9am": "sequelize-cli db:seed --seed 8-lon-o2-update-weekend9am.js",
+    "db:seed:o2:updated:weekend9am:undo": "sequelize-cli db:seed:undo --seed 8-lon-o2-update-weekend9am.js",
+    "db:seed:o2:updated:lono2schedule": "sequelize-cli db:seed --seed 91-lon-o2-10min-schedule.js",
+    "db:seed:o2:updated:lono2schedule:undo": "sequelize-cli db:seed:undo --seed 91-lon-o2-10min-schedule.js",
+    "db:seed:o2:prices": "sequelize-cli db:seed --seed 92-lon-o2-update-prices.js",
+    "db:seed:o2:prices:undo": "sequelize-cli db:seed:undo --seed 92-lon-o2-update-prices.js",
+    "db:seed:updateo2:peakprice": "sequelize-cli db:seed --seed 94-lon-o2-update-peak-prices.js",
+    "db:seed:updateo2:peakprice:undo": "sequelize-cli db:seed:undo --seed 94-lon-o2-update-peak-prices.js",
+    "db:seed:o2:doublebox": "sequelize-cli db:seed --seed 97-lon-o2-double-box-schedule.js",
+    "db:seed:o2:doublebox:undo": "sequelize-cli db:seed:undo --seed 97-lon-o2-double-box-schedule.js",
+    "db:seed:o2:populateboxbooking": "sequelize-cli db:seed --seed 98-populate-box-booking.js",
+    "db:seed:o2:populateboxbooking:undo": "sequelize-cli db:seed:undo --seed 98-populate-box-booking.js",
+    "db:seed:o2:pricesincvat": "sequelize-cli db:seed --seed 99-lon-o2-prices-inc-vat.js",
+    "db:seed:o2:pricesincvat:undo": "sequelize-cli db:seed:undo --seed 99-lon-o2-prices-inc-vat.js",
+    "db:seed:o2:box12slots": "sequelize-cli db:seed --seed 992-lon-o2-box-12-slots.js",
+    "db:seed:o2:box12slots:undo": "sequelize-cli db:seed:undo --seed 992-lon-o2-box-12-slots.js",
+    "db:seed:test": "sequelize-cli db:seed --seed 1-test-data.js",
+    "db:seed:test:undo": "sequelize-cli db:seed:undo --seed 1-test-data.js",
+    "prepare": "husky install",
+    "performance": "npx artillery run artillery.yml --output reports/report.json",
+    "postperformance": "npx artillery report --output reports/report.html reports/report.json"
+  },
+  "engines": {
+    "node": ">=14",
+    "npm": ">=6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toca-football/toca-booking-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/toca-football/toca-booking-api/issues"
+  },
+  "homepage": "https://github.com/toca-football/toca-booking-api#readme",
+  "dependencies": {
+    "date-fns": "^2.22.1",
+    "date-fns-tz": "^1.1.4",
+    "dotenv": "^10.0.0",
+    "jsonwebtoken": "^9.0.0",
+    "mysql2": "^2.2.5",
+    "pascal-case": "^3.1.2",
+    "sequelize": "^6.9.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "aws-sdk": "^2.880.0",
+    "axios": "^0.21.4",
+    "eslint": "^7.29.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.23.4",
+    "eslint-plugin-jest": "^24.3.6",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "husky": "^7.0.0",
+    "jest": "^27.0.6",
+    "jest-junit": "^12.2.0",
+    "lint-staged": "^11.0.0",
+    "prettier": "2.3.2",
+    "randomstring": "^1.2.2",
+    "sequelize-cli": "^6.5.2",
+    "serverless": "^2.72.3",
+    "serverless-domain-manager": "^5.1.0",
+    "serverless-offline": "^8.8.0",
+    "supertest": "^6.1.3"
+  },
+  "lint-staged": {
+    "*.js": "eslint",
+    "*.{js,json,css,md,yml}": "prettier --write"
+  },
+  "jest": {
+    "reporters": [
+      "default",
+      "jest-junit"
+    ]
+  },
+  "jest-junit": {
+    "outputDirectory": "reports",
+    "outputName": "jest-junit.xml",
+    "ancestorSeparator": " › ",
+    "uniqueOutputName": "false",
+    "suiteNameTemplate": "{filepath}",
+    "classNameTemplate": "{classname}",
+    "titleTemplate": "{title}"
+  }
+}
