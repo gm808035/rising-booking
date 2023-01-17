@@ -1,35 +1,319 @@
-org: wildmint
-app: rising-booking
-service: rising-booking-test
-frameworkVersion: "3"
+# org: wildmint
+# app: rising-booking
+# service: rising-booking-test
+
+# provider:
+#   name: aws
+#   runtime: nodejs16.x
+#   logs:
+#     restApi: true
+#     httpApi: true
+#   region: eu-west-2
+#   stage: dev
+#   environment:
+#     DB_USERNAME: admin
+#     # decrypt at deploy time, not recommended
+#     DB_PASSWORD: adminpassword
+#     DB_DATABASE: database-1
+#     DB_HOST: database-1.cphbxirypjco.eu-west-2.rds.amazonaws.com
+#     # Sentry https://docs.sentry.io/product/integrations/aws-lambda/#serverless-framework
+#     SENTRY_TRACES_SAMPLE_RATE: "1.0"
+#   # vpc:
+#   #   securityGroupIds:
+#   #     - sg-008713b20bd431425
+#     # subnetIds: arn:aws:ec2:eu-west-2:24s5513588317:subnet/subnet-06c6762372e1182a2
+#   iam:
+#     role:
+#       - arn:aws:iam::245513588317:role/rising-booking
+
+# custom:
+#   serverless-offline:
+#     host: 0.0.0.0
+
+# functions:
+#   currentTime:
+#     handler: handler.endpoint
+#     events:
+#       - http:
+#           path: /pong
+#           method: get
+#   health:
+#     handler: src/functions/health.handler
+#     events:
+#       - http:
+#           path: /health
+#           method: get
+#   getVenueByCode:
+#     handler: src/functions/venue.getByCodeHandler
+#     events:
+#       - http:
+#           path: /venues/{code}
+#           method: get
+#           cors: true
+#           private: true
+#   getVenue:
+#     handler: src/functions/venue.getAllHandler
+#     events:
+#       - http:
+#           path: /venues
+#           method: get
+#           cors: true
+#   postPeakTimes:
+#     handler: src/functions/peakTimes.createHandler
+#     events:
+#       - http:
+#           path: /peakTimes/{schedule}
+#           method: post
+#           cors: true
+#           private: true
+#   patchPeakTimes:
+#     handler: src/functions/peakTimes.updatePeakHandler
+#     events:
+#       - http:
+#           path: /peakTimes/{schedule}
+#           method: patch
+#           cors: true
+#           private: true
+#   deletePeakTimes:
+#     handler: src/functions/peakTimes.deleteHandler
+#     events:
+#       - http:
+#           path: /peakTimes/{schedule}
+#           method: delete
+#           cors: true
+#           private: true
+#   #SMS
+#   patchBoxSlot:
+#     handler: src/functions/boxSlots.updateHandler
+#     events:
+#       - http:
+#           path: /boxSlots/{id}
+#           method: patch
+#           cors: true
+#           private: true
+#   patchLinkedBoxSlot:
+#     handler: src/functions/boxSlots.updateHandlerLinkedSlot
+#     events:
+#       - http:
+#           path: /boxSlots/link/{id}
+#           method: patch
+#           cors: true
+#           private: true
+#   createBoxSlot:
+#     handler: src/functions/boxSlots.createHandler
+#     events:
+#       - http:
+#           path: /boxSlots
+#           method: post
+#           cors: true
+#           private: true
+#   createBoxSlotsLinked:
+#     handler: src/functions/boxSlots.createLinkedHandler
+#     events:
+#       - http:
+#           path: /boxSlots/link
+#           method: post
+#           cors: true
+#           private: true
+#   filterBoxSlot:
+#     handler: src/functions/boxSlots.filterHandler
+#     events:
+#       - http:
+#           path: /boxSlots/filter
+#           method: post
+#           cors: true
+#           private: true
+#   deleteBoxSlot:
+#     handler: src/functions/boxSlots.deleteHandler
+#     events:
+#       - http:
+#           path: /boxSlots/delete
+#           method: post
+#           cors: true
+#           private: true
+#   deleteBoxSlotLinked:
+#     handler: src/functions/boxSlots.deleteLinkedSlot
+#     events:
+#       - http:
+#           path: /boxSlots/link/delete
+#           method: post
+#           cors: true
+#           private: true
+#   #SMS Schedule
+#   getScheduleByDateHandler:
+#     handler: src/functions/schedule.getScheduleByDateHandler
+#     events:
+#       - http:
+#           path: /schedule/{venue}/{date}
+#           method: get
+#           cors: true
+#           private: true
+#   createSchedule:
+#     handler: src/functions/schedule.createScheduleHandler
+#     events:
+#       - http:
+#           path: /schedule/{venue}
+#           method: post
+#           cors: true
+#           private: true
+#   applySchedule:
+#     handler: src/functions/schedule.applyScheduleHandler
+#     events:
+#       - http:
+#           path: /apply/schedule/{venue}/{schedule}
+#           method: post
+#           cors: true
+#           private: true
+#   applyScheduleAvailability:
+#     handler: src/functions/schedule.availabilityScheduleHandler
+#     events:
+#       - http:
+#           path: /apply/schedule/availability/{venue}/{schedule}
+#           method: post
+#           cors: true
+#           private: true
+#   filterSchedule:
+#     handler: src/functions/schedule.filterScheduleHandler
+#     events:
+#       - http:
+#           path: /schedule/filter/{venueId}
+#           method: get
+#           cors: true
+#           private: true
+#   deleteSchedule:
+#     handler: src/functions/schedule.deleteScheduleHandler
+#     events:
+#       - http:
+#           path: /schedule/type/{id}
+#           method: delete
+#           cors: true
+#           private: true
+#   updateSchedule:
+#     handler: src/functions/schedule.updateScheduleHandler
+#     events:
+#       - http:
+#           path: /schedule/type/{id}
+#           method: patch
+#           cors: true
+#           private: true
+#   getScheduleByIdHandler:
+#     handler: src/functions/schedule.getScheduleByIdHandler
+#     events:
+#       - http:
+#           path: /schedule/type/{id}
+#           method: get
+#           cors: true
+#           private: true
+#   copyScheduleById:
+#     handler: src/functions/schedule.copyScheduleByIdHandler
+#     events:
+#       - http:
+#           path: /schedule/type/{id}
+#           method: post
+#           cors: true
+#           private: true
+#   #SMS recurrence
+#   patchRecurrence:
+#     handler: src/functions/recurrence.updateHandler
+#     events:
+#       - http:
+#           path: /recurrences/{schedule}
+#           method: patch
+#           cors: true
+#           private: true
+#   postRecurrence:
+#     handler: src/functions/recurrence.createHandler
+#     events:
+#       - http:
+#           path: /recurrences/{schedule}
+#           method: post
+#           cors: true
+#           private: true
+#   patchOpenTime:
+#     handler: src/functions/openTimes.updateHandler
+#     events:
+#       - http:
+#           path: /openTime/{schedule}/{openTimeId}
+#           method: patch
+#           cors: true
+#           private: true
+
+service: toca-booking-api
+
+plugins:
+  - serverless-offline
+  - serverless-domain-manager
 
 provider:
   name: aws
-  runtime: nodejs16.x
   logs:
     restApi: true
     httpApi: true
-  region: eu-west-2
-  stage: dev
+  runtime: nodejs16.x
+  region: ${opt:region, 'eu-west-2'}
+  stage: ${opt:stage, 'dev'}
+  apiKeys:
+    - development
+    - web
+    - kiosk
   environment:
-    DB_USERNAME: admin
+    DB_USERNAME: ${ssm:/backend/rds/booking/DB_USERNAME}
     # decrypt at deploy time, not recommended
-    DB_PASSWORD: adminpassword
-    DB_DATABASE: database-1
-    DB_HOST: database-1.cphbxirypjco.eu-west-2.rds.amazonaws.com
+    DB_PASSWORD: ${ssm:/backend/rds/booking/DB_PASSWORD~true}
+    DB_DATABASE: ${ssm:/backend/rds/booking/DB_DATABASE}
+    DB_HOST: ${ssm:/backend/rds/booking/DB_HOST}
+    DB_READER_HOST: ${ssm:/backend/rds/booking/DB_READER_HOST}
+    EMAIL_QUEUE_URL: ${ssm:/backend/EMAIL_QUEUE_URL}
+    EVENT_BUS_BOOKING: toca-host-terminal-service
+    EVENT_BUS_AUDIT: toca-audit-api
+    EMAIL_CONTENT_TABLE: ${ssm:/backend/EMAIL_CONTENT_TABLE}
     # Sentry https://docs.sentry.io/product/integrations/aws-lambda/#serverless-framework
     SENTRY_TRACES_SAMPLE_RATE: "1.0"
-  # vpc:
-  #   securityGroupIds:
-  #     - sg-008713b20bd431425
-    # subnetIds: arn:aws:ec2:eu-west-2:24s5513588317:subnet/subnet-06c6762372e1182a2
+    SENTRY_DSN: ${ssm:/sentry/DSN}
+    NODE_OPTIONS: "-r @sentry/serverless/dist/awslambda-auto"
+  vpc:
+    securityGroupIds:
+      - ${ssm:/backend/SECURITY_GROUP_ID}
+    subnetIds: ${ssm:/backend/PRIVATE_SUBNET_IDS~split}
   iam:
     role:
-      - arn:aws:iam::245513588317:role/rising-booking
+      statements:
+        - Effect: Allow
+          Action:
+            - sqs:SendMessage
+            - sqs:GetQueueAttributes
+          Resource:
+            - ${ssm:/backend/EMAIL_QUEUE_ARN}
+        - Effect: Allow
+          Action:
+            - events:PutEvents
+          Resource:
+            - ${ssm:/backend/host/EVENT_BUS_ARN}
+        - Effect: "Allow"
+          Action:
+            - dynamodb:UpdateItem
+          Resource: ${ssm:/backend/EMAIL_CONTENT_TABLE_ARN}
+  layers:
+    - arn:aws:lambda:eu-west-2:943013980633:layer:SentryNodeServerlessSDK:20
 
 custom:
   serverless-offline:
     host: 0.0.0.0
+    apiKey: "test-key"
+  domain: booking.api${self:custom.stageDomainPrefix.${self:provider.stage}}.toca.social
+  stageDomainPrefix:
+    dev: ".dev"
+    qa: ".qa"
+    staging: ".staging"
+    prod: ""
+  customDomain:
+    rest:
+      domainName: ${self:custom.domain}
+      createRoute53Record: false # managed by terraform in the root account
+      endpointType: "regional"
+      certificateArn: ${ssm:/backend/CERTIFICATE_ARN}
+      autoDomain: true
+      autoDomainWaitFor: 120
 
 functions:
   currentTime:
@@ -44,6 +328,26 @@ functions:
       - http:
           path: /health
           method: get
+  getAvailabilityByDay:
+    timeout: 30
+    reservedConcurrency: 2
+    handler: src/functions/getAvailabilityByDay.handler
+    events:
+      - http:
+          path: /availability/{venue}/{day}/{duration}
+          method: get
+          cors: true
+          private: true
+  getAvailabilityByDateRange:
+    timeout: 30
+    reservedConcurrency: 2
+    handler: src/functions/getAvailabilityByDateRange.handler
+    events:
+      - http:
+          path: /availability/range/{venue}/{from}/{to}/{duration}
+          method: get
+          cors: true
+          private: true
   getVenueByCode:
     handler: src/functions/venue.getByCodeHandler
     events:
@@ -59,6 +363,54 @@ functions:
           path: /venues
           method: get
           cors: true
+          private: true
+  postBooking:
+    handler: src/functions/booking.createHandler
+    events:
+      - http:
+          path: /bookings
+          method: post
+          cors: true
+          private: true
+          authorizer: ${ssm:/backend/AUTH_VALIDATE_ARN}
+  patchBooking:
+    handler: src/functions/booking.updateHandler
+    events:
+      - http:
+          path: /bookings/{bookingKey}
+          method: patch
+          cors: true
+          private: true
+          authorizer: ${ssm:/backend/AUTH_VALIDATE_ARN}
+  getBooking:
+    handler: src/functions/booking.getHandler
+    events:
+      - http:
+          path: /bookings/{bookingKey}
+          method: get
+          cors: true
+          private: true
+          authorizer: ${ssm:/backend/AUTH_VALIDATE_ARN}
+  clearReservedBookings:
+    handler: src/functions/clearReservedBookings.handler
+    events:
+      - schedule: rate(1 minute)
+  sendReminderEmails:
+    handler: src/functions/sendReminderEmails.handler
+    events:
+      - schedule: cron(0 12 * * ? *)
+  bookingEventsPublisher:
+    handler: src/functions/publishBookingUpdates.handler
+    events:
+      - schedule: rate(1 minute)
+
+  # To be invoked directly by Payments API
+  getBookingPrice:
+    handler: src/functions/booking.getPriceHandler
+  confirmBooking:
+    handler: src/functions/booking.confirmHandler
+  cancelBooking:
+    handler: src/functions/booking.cancelHandler
   postPeakTimes:
     handler: src/functions/peakTimes.createHandler
     events:
@@ -67,6 +419,7 @@ functions:
           method: post
           cors: true
           private: true
+          authorizer: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
   patchPeakTimes:
     handler: src/functions/peakTimes.updatePeakHandler
     events:
@@ -75,6 +428,7 @@ functions:
           method: patch
           cors: true
           private: true
+          authorizer: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
   deletePeakTimes:
     handler: src/functions/peakTimes.deleteHandler
     events:
@@ -83,6 +437,7 @@ functions:
           method: delete
           cors: true
           private: true
+          authorizer: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
   #SMS
   patchBoxSlot:
     handler: src/functions/boxSlots.updateHandler
@@ -92,6 +447,9 @@ functions:
           method: patch
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
   patchLinkedBoxSlot:
     handler: src/functions/boxSlots.updateHandlerLinkedSlot
     events:
@@ -100,6 +458,9 @@ functions:
           method: patch
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
   createBoxSlot:
     handler: src/functions/boxSlots.createHandler
     events:
@@ -108,6 +469,9 @@ functions:
           method: post
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
   createBoxSlotsLinked:
     handler: src/functions/boxSlots.createLinkedHandler
     events:
@@ -116,6 +480,9 @@ functions:
           method: post
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
   filterBoxSlot:
     handler: src/functions/boxSlots.filterHandler
     events:
@@ -124,6 +491,9 @@ functions:
           method: post
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
   deleteBoxSlot:
     handler: src/functions/boxSlots.deleteHandler
     events:
@@ -132,6 +502,9 @@ functions:
           method: post
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
   deleteBoxSlotLinked:
     handler: src/functions/boxSlots.deleteLinkedSlot
     events:
@@ -140,6 +513,9 @@ functions:
           method: post
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
   #SMS Schedule
   getScheduleByDateHandler:
     handler: src/functions/schedule.getScheduleByDateHandler
@@ -149,6 +525,9 @@ functions:
           method: get
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
   createSchedule:
     handler: src/functions/schedule.createScheduleHandler
     events:
@@ -157,6 +536,9 @@ functions:
           method: post
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
   applySchedule:
     handler: src/functions/schedule.applyScheduleHandler
     events:
@@ -165,6 +547,9 @@ functions:
           method: post
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
   applyScheduleAvailability:
     handler: src/functions/schedule.availabilityScheduleHandler
     events:
@@ -173,6 +558,9 @@ functions:
           method: post
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
   filterSchedule:
     handler: src/functions/schedule.filterScheduleHandler
     events:
@@ -181,6 +569,9 @@ functions:
           method: get
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
   deleteSchedule:
     handler: src/functions/schedule.deleteScheduleHandler
     events:
@@ -189,6 +580,9 @@ functions:
           method: delete
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
   updateSchedule:
     handler: src/functions/schedule.updateScheduleHandler
     events:
@@ -197,6 +591,9 @@ functions:
           method: patch
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
   getScheduleByIdHandler:
     handler: src/functions/schedule.getScheduleByIdHandler
     events:
@@ -205,6 +602,9 @@ functions:
           method: get
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
   copyScheduleById:
     handler: src/functions/schedule.copyScheduleByIdHandler
     events:
@@ -213,6 +613,9 @@ functions:
           method: post
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
   #SMS recurrence
   patchRecurrence:
     handler: src/functions/recurrence.updateHandler
@@ -222,6 +625,9 @@ functions:
           method: patch
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
   postRecurrence:
     handler: src/functions/recurrence.createHandler
     events:
@@ -230,6 +636,9 @@ functions:
           method: post
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
   patchOpenTime:
     handler: src/functions/openTimes.updateHandler
     events:
@@ -238,3 +647,144 @@ functions:
           method: patch
           cors: true
           private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
+  # kiosk
+  getWaitingtime:
+    handler: src/functions/kiosk.waitingTimeHandler
+    timeout: 10
+    events:
+      - http:
+          path: /kiosk/waitingtime/{venue}/{duration}
+          method: get
+          cors: true
+          private: true
+  getWaitingtimeOn:
+    handler: src/functions/kiosk.waitingTimeHandler
+    events:
+      - http:
+          path: /kiosk/waitingtime/{venue}/{duration}/{date}
+          method: get
+          cors: true
+          private: true
+  postKioskBooking:
+    handler: src/functions/kiosk.createHandler
+    timeout: 10
+    events:
+      - http:
+          path: /kiosk/bookings
+          method: post
+          cors: true
+          private: true
+          authorizer: ${ssm:/backend/AUTH_VALIDATE_ARN}
+  postCheckin:
+    handler: src/functions/kiosk.checkinHandler
+    events:
+      - http:
+          path: /kiosk/checkin
+          method: post
+          cors: true
+          private: true
+          authorizer: ${ssm:/backend/AUTH_VALIDATE_ARN}
+  postCheckinByRef:
+    handler: src/functions/kiosk.checkinByReferenceHandler
+    events:
+      - http:
+          path: /kiosk/checkin/{reference}
+          method: post
+          cors: true
+          private: true
+          throttling:
+            maxRequestsPerSecond: 20
+            maxConcurrentRequests: 20
+  postSendQrCode:
+    handler: src/functions/kiosk.sendQrCodeHandler
+    events:
+      - http:
+          path: /kiosk/sendqrcode
+          method: post
+          cors: true
+          private: true
+
+  #reception
+  receptionFilterBookings:
+    handler: src/functions/reception.filterHandler
+    events:
+      - http:
+          path: /reception/bookings/filter
+          method: post
+          cors: true
+          private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
+
+  receptionCreateBooking:
+    handler: src/functions/reception.createHandler
+    events:
+      - http:
+          path: /reception/bookings/
+          method: post
+          cors: true
+          private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
+
+  receptionUpdateBooking:
+    handler: src/functions/reception.updateHandler
+    events:
+      - http:
+          path: /reception/bookings/{bookingKey}
+          method: patch
+          cors: true
+          private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
+
+  receptionDeleteBooking:
+    handler: src/functions/reception.deleteHandler
+    events:
+      - http:
+          path: /reception/bookings/{bookingKey}
+          method: delete
+          cors: true
+          private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
+
+  receptionTimings:
+    handler: src/functions/reception.timingHandler
+    events:
+      - http:
+          path: /reception/timings/{venue}/{day}
+          method: get
+          cors: true
+          private: true
+          authorizer:
+            arn: ${ssm:/backend/AUTH0_AUTHORISE_ARN}
+            resultTtlInSeconds: 0
+
+resources:
+  Resources:
+    GatewayResponseDefault4XX:
+      Type: "AWS::ApiGateway::GatewayResponse"
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_4XX
+        RestApiId:
+          Ref: "ApiGatewayRestApi"
+    GatewayResponseDefault5XX:
+      Type: "AWS::ApiGateway::GatewayResponse"
+      Properties:
+        ResponseParameters:
+          gatewayresponse.header.Access-Control-Allow-Origin: "'*'"
+          gatewayresponse.header.Access-Control-Allow-Headers: "'*'"
+        ResponseType: DEFAULT_5XX
+        RestApiId:
+          Ref: "ApiGatewayRestApi"

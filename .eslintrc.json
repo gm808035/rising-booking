@@ -1,0 +1,39 @@
+{
+  "env": {
+    "node": true,
+    "jest": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2020
+  },
+  "extends": [
+    "airbnb-base",
+    "plugin:node/recommended",
+    "plugin:jest/recommended",
+    "prettier"
+  ],
+  "plugins": ["prettier", "jest"],
+  "rules": {
+    "prettier/prettier": ["error"],
+    "jest/expect-expect": "off",
+    "node/no-unpublished-require": [
+      "error",
+      {
+        "allowModules": ["aws-sdk"]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["**/*.test.js", "tests/**"],
+      "rules": {
+        "node/no-unpublished-require": 0,
+        "node/no-missing-require": 0
+      }
+    }
+  ],
+  "settings": {
+    "import/core-modules": ["aws-sdk"]
+  }
+}

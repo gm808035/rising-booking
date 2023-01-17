@@ -1,0 +1,97 @@
+@startuml
+title BookNow Website and Booking API flow
+
+actor customer
+participant "BookNow Website" as website
+participant "Booking API" as api
+participant "Payment API" as payment
+participant "Session service" as auth
+participant "Stripe" as stripe
+participant "Email SES" as email
+
+== Start ==
+
+customer -> website: Set number of players and game **duration** (60 or 90)
+website -> api: Fetch availability from **tomorrow** until **last day of month** and **duration**
+note over api: GET /availability/range/{venueCode}/{from}/{to}/{duration}
+api -> website: Return array of available dates
+
+group Select different month
+  website -> api: Fetch availability from given **from** date until **to** date and **duration**
+  note over api: GET /availability/range/{venueCode}/{from}/{to}/{duration}
+  api -> website: Return array of available dates
+end
+
+== Select time slot ==
+
+customer -> website: Select available date
+website -> api: Fetch available time slots for selected **date**
+note over api: GET /availability/{venueCode}/{day}/{duration}
+api -> website: Return array of available time slots and associated boxes
+customer -> website: Select time slot available
+
+== Add customer details ==
+
+customer -> website: Add customer details to booking
+website -> auth: Create **SESSION_TOKEN** with customer **email** and details
+auth -> website: Return **SESSION_TOKEN**
+website -> api: Create booking with booking details
+note over api: POST /booking \nwith **Bearer: SESSION_TOKEN**
+api -> website: Return success
+note right of customer #aqua: Timeslot, date and box reserved for 20 minutes
+
+group OPTIONAL STEP: Select different time slot
+  note right of customer: Can happen at any time BEFORE customer confirming the booking
+  website -> api: Update booking timeslot
+  note over api: PATCH /booking/{bookingKey}\nwith **Bearer: SESSION_TOKEN**
+  api -> website: Return success if timeslot available
+  note right of customer #aqua: New timeslot, date and box reserved for 20 minutes\nPrevious slot becomes available again
+end
+
+== OPTIONAL STEP: Add booking notes ==
+
+customer -> website: Add notes to booking
+website -> api: Update booking with notes
+note over api: PATCH /booking/{bookingKey}\nwith **Bearer: SESSION_TOKEN**
+api -> website: Return success
+
+== Pay for booking ==
+
+customer -> website: Open payment page
+website -> payment: Create booking payment intent
+note over payment: POST /payment/\nwith **Bearer: SESSION_TOKEN**
+payment --> api: Extend booking duration by 20 minutes
+payment -> website: Return clientSecret
+note right of customer #aqua: Timeslot, date and box extended by 20 minutes
+
+group OPTIONAL STEP: Use coupon
+
+  customer -> website: Enter coupon
+  website -> payment: Redeem coupon
+  note over payment: POST /payment/promocode/redeem\nwith **Bearer: SESSION_TOKEN**
+  payment -> payment: Update payment intent
+  payment -> website: Return if coupon was applied successfully or not
+
+end group
+
+
+customer -> website: Enter card details & pay
+website -> stripe: stripe.confirmCardPayment
+stripe -> website: Return success
+
+group Stripe webhook
+  stripe -> payment: Webhook to listen to stripe events
+  payment -> payment: If coupon was used then register that
+  payment -> api: Confirm booking based on stripe response
+end group
+
+api -> email: Send email confirmation
+
+== OPTIONAL STEP: Add drinks ==
+
+customer -> website: Select drinks to add to booking
+website -> api: Add drinks to booking
+note over api: PATCH /booking/{bookingKey}\nwith **Bearer: SESSION_TOKEN**
+api -> website: Return success
+api -> email: Send email confirmation with drinks information
+@enduml

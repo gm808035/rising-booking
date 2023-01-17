@@ -79,7 +79,7 @@
     "lint-staged": "^11.0.0",
     "prettier": "2.3.2",
     "randomstring": "^1.2.2",
-    "sequelize-cli": "^6.5.2",
+    "sequelize-cli": "^6.4.1",
     "serverless": "^2.72.3",
     "serverless-domain-manager": "^5.1.0",
     "serverless-offline": "^8.8.0",

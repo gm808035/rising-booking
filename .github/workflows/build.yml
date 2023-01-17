@@ -1,0 +1,40 @@
+name: TOCA Booking API CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14.x"
+          # cache: "npm"
+      - run: npm audit --production
+      - run: npm ci
+      - run: npm run lint
+      - name: Build the stack
+        run: docker-compose up -d
+      - name: Setup AWS dummy credentials
+        run: yarn sls config credentials --overwrite --provider aws --key KEY --secret SECRET
+      - name: Wait until all aws cli commands have run
+        uses: nick-invision/retry@v2
+        with:
+          timeout_minutes: 1
+          retry_wait_seconds: 2
+          max_attempts: 10
+          command: docker ps --filter "status=exited" | grep awscli
+      - run: npm run test -- --runInBand
+      - name: Test Report
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: test-results
+          path: reports/jest-junit.xml
+          reporter: jest-junit
+      - name: Docker status on failure
+        run: docker-compose ps && docker-compose logs -t
+        if: failure()

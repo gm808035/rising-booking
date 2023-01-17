@@ -55,10 +55,15 @@ services:
       LOG_LEVEL: debug
       DB_HOST: db
       DB_READER_HOST: db
-      DB_DATABASE: database-1
-      DB_USERNAME: admin
-      DB_PASSWORD: adminpassword
+      DB_DATABASE: database
+      DB_USERNAME: mysqluser
+      DB_PASSWORD: mysqlpassword
       DEBUG: "sequelize:*"
+      EMAIL_QUEUE_URL: http://sqs:1080/queue/email
+      SQS_ENDPOINT: http://sqs:1080
+      EVENTBRIDGE_ENDPOINT: http://eventbridge:1081
+      DYNAMODB_ENDPOINT: http://dynamodb:8000
+      EMAIL_CONTENT_TABLE: email_content
     volumes:
       - ./:/home/node/app:cached
     command: sh -c '

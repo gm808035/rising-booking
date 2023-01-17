@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="26" failures="0" errors="0" time="5.239">
+  <testsuite name="tests/kiosk.waitingtime.test.js" errors="0" failures="0" skipped="1" timestamp="2023-01-06T05:51:36" time="5.208" tests="26">
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="when requesting invalid venue then return 404" time="0">
+      <skipped/>
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Saturday (2021-05-01 - open times [12:00 to 19:00]) - 11:00 - before open time of venue" time="0.421">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Saturday (2021-05-01 - open times [12:00 to 19:00]) - 12:00 - immediate for 60m only and 5th after for 90m" time="0.297">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Saturday (2021-05-01 - open times [12:00 to 19:00]) - 15:00 - 2h wait" time="0.254">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Saturday (2021-05-01 - open times [12:00 to 19:00]) - 17:15 - both available" time="0.206">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Saturday (2021-05-01 - open times [12:00 to 19:00]) - 17:30 - only 60m available" time="0.174">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Saturday (2021-05-01 - open times [12:00 to 19:00]) - 17:45 - only 60m available" time="0.15">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Saturday (2021-05-01 - open times [12:00 to 19:00]) - 18:00 - 1h before close no availability" time="0.123">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Saturday (2021-05-01 - open times [12:00 to 19:00]) - 19:00 - closed venue" time="0.176">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Sunday (2021-05-02 - open times [15:45 to 16:45]) - 12:00 - before open time of venue and no availability" time="0.167">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Sunday (2021-05-02 - open times [15:45 to 16:45]) - 15:45 - no time for cleanup" time="0.133">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Sunday (2021-05-02 - open times [15:45 to 16:45]) - 17:00 - closed venue" time="0.121">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Monday (2021-05-03 - open times [13:30 to 19:00]) - 12:00 - before open time of venue" time="0.142">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Monday (2021-05-03 - open times [13:30 to 19:00]) - 13:30 - venue open" time="0.131">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Monday (2021-05-03 - open times [13:30 to 19:00]) - 15:30 - venue open 30m before peak" time="0.144">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Monday (2021-05-03 - open times [13:30 to 19:00]) - 16:00 - venue open 30m before peak" time="0.146">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Monday (2021-05-03 - open times [13:30 to 19:00]) - 17:45 - only 60m booking available" time="0.134">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Monday (2021-05-03 - open times [13:30 to 19:00]) - 18:00 - not enough time before closing" time="0.125">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Monday (2021-05-03 - open times [13:30 to 19:00]) - 19:00 - closed venue" time="0.116">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Monday (2021-05-03 - open times [13:30 to 19:00]) - 19:00 - closed venue" time="0.124">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Thursday (2021-05-06 - open times [09:00 to 19:00]) - 09:00 - available only after 11:15 (3 bookings on same section so box5 doesn&apos;t have enough time for booking)" time="0.324">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Thursday (2021-05-06 - open times [09:00 to 19:00]) - 13:35 - available immediately at 13:45 - cleanup for playmaker" time="0.333">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Thursday (2021-05-06 - open times [09:00 to 19:00]) - 14:55 - both available" time="0.33">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Thursday (2021-05-06 - open times [09:00 to 19:00]) - 16:01 - immediately in 15m because of playmaker 5m finish time" time="0.281">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Thursday (2021-05-06 - open times [09:00 to 19:00]) - 16:10 - both available" time="0.219">
+    </testcase>
+    <testcase classname="/kiosk/waitingtime/{venue}/{duration}/{date}" name="Thursday (2021-05-06 - open times [09:00 to 19:00]) - 19:00 - closed venue" time="0.131">
+    </testcase>
+  </testsuite>
+</testsuites>

@@ -2,20 +2,20 @@ require("dotenv").config();
 
 module.exports = {
   development: {
-    username: "admin",
-    password:"adminpassword",
-    database: "database-1",
-    host: "database-1.cphbxirypjco.eu-west-2.rds.amazonaws.com",
-    // replication: {
-    //   read: [
-    //     {
-    //       host: process.env.DB_READER_HOST,
-    //     },
-    //   ],
-    //   write: {
-    //     host: process.env.DB_HOST,
-    //   },
-    // },
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    host: process.env.DB_HOST,
+    replication: {
+      read: [
+        {
+          host: process.env.DB_READER_HOST,
+        },
+      ],
+      write: {
+        host: process.env.DB_HOST,
+      },
+    },
     dialect: "mysql",
     dialectOptions: {
       connectTimeout: 60000,
@@ -33,20 +33,20 @@ module.exports = {
     },
   },
   production: {
-    username: "admin",
-    password:"adminpassword",
-    database: "database-1",
-    host: "database-1.cphbxirypjco.eu-west-2.rds.amazonaws.com",
-    // replication: {
-    //   read: [
-    //     {
-    //       host: process.env.DB_READER_HOST,
-    //     },
-    //   ],
-    //   write: {
-    //     host: process.env.DB_HOST,
-    //   },
-    // },
+    username: process.env.DB_USERNAME,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    host: process.env.DB_HOST,
+    replication: {
+      read: [
+        {
+          host: process.env.DB_READER_HOST,
+        },
+      ],
+      write: {
+        host: process.env.DB_HOST,
+      },
+    },
     dialect: "mysql",
     dialectOptions: {
       connectTimeout: 60000,

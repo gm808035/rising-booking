@@ -1,0 +1,153 @@
+@startuml
+title Data Model
+hide circle
+
+skinparam class {
+  backgroundColor #white
+}
+
+entity "booking" {
+  *id: number
+  --
+  *venue_id: number <FK>
+  start: date
+  end: date
+  box_slot_start: date
+  box_slot_end: date
+  price: number
+  reference: text
+  session_id: text
+  guests_no: number
+  extras: text
+  packages: text
+  notes: text
+  checkin_at: date
+  deleted_at: date
+  created_at: date
+  updated_at: date
+  type: enum
+  source: enum
+  status: enum
+}
+
+entity "venue" {
+  *id: number
+  --
+  name: text
+  code: text
+  timezone: text
+  created_at: date
+  updated_at: date
+}
+
+entity "schedule" {
+  *id: number
+  --
+  name: text
+  code: text
+  from: date
+  to: date
+  applied_dates: json
+  order: number
+  date_of_apply: date
+  created_at: date
+  updated_at: date
+}
+
+entity "open_time" {
+  *id: number
+  --
+  *schedule_id: number <FK>
+  start: time
+  end: time
+  created_at: date
+  updated_at: date
+}
+
+entity "box" {
+  *id: number
+  --
+  *venue_id: number <FK>
+  name: text
+  section: number
+  created_at: date
+  updated_at: date
+}
+
+entity "box_booking" {
+  *id: number
+  --
+  *booking_id: number <FK>
+  *box_id: number <FK>
+  created_at: date
+  updated_at: date
+}
+
+entity "box_slot_link" {
+  *id: number
+  --
+  *box_slot_id: number <FK>
+  linked_box_slot_id: number
+  created_at: date
+  updated_at: date
+}
+
+entity "box_slot" {
+  *id: number
+  --
+  *schedule_id: number <FK>
+  *box_id: number <FK>
+  start: time
+  duration: number
+  created_at: date
+  updated_at: date
+}
+
+entity "price" {
+  *id: number
+  --
+  *open_time_id: number <FK>
+  start: time
+  end: time
+  type: text
+  price: number
+  order: number
+  created_at: date
+  updated_at: date
+}
+
+entity "venue_schedule" {
+  *id: number
+  --
+  *schedule_id: number <FK>
+  *venue_id: number <FK>
+  created_at: date
+  updated_at: date
+}
+entity "recurrence" {
+  *id: number
+  --
+  *schedule_id: number <FK>
+   recurrence_type: enum
+   day_of_week: json
+   week_of_month: json
+   month_of_year: json
+   separation_count: integer
+   created_at: date
+   updated_at: date
+}
+booking --> box
+booking --> venue
+box --> venue
+box_slot --> box
+box_slot --> schedule
+open_time --> schedule
+venue --> venue_schedule
+price --> open_time
+box_booking --> booking
+box_booking --> box
+box_slot_link --> box_slot
+schedule --> venue_schedule
+recurrence --> schedule
+
+@enduml

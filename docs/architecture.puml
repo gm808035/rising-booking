@@ -1,0 +1,78 @@
+@startuml
+title High Level Aarchitecture
+left to right direction
+
+!$LAUNCH = "steelblue"
+!$RISK = "lightcoral"
+!$OUTSIDE = "lightgrey"
+
+package "Legend" {
+  component "COLOR FOR MVP"
+  component "COLOR FOR LAUNCH" #$LAUNCH
+  component "COLOR FOR RISK" #$RISK
+  component "COLOR FOR OUTSIDE SCOPE" #$OUTSIDE
+}
+
+actor Customer as customer
+actor Receptionist as receptionist
+actor Playmaker as playmaker
+actor "Events Manager" as events
+
+package "Frontend" {
+  component "Booking website" as booknow
+  component "Kiosk app" as kiosk #$LAUNCH
+  component "Reception app" as reception #$LAUNCH
+  component "Playmaker app" as playmakerapp #$OUTSIDE
+  component "Venue Management System" as vns #$OUTSIDE
+}
+
+package "Backend" {
+  component "Booking Service" {
+    component "Booking API" as bookingapi {
+      node "Availability"
+      node "Bookings"
+    }
+    node "Venues"
+    node "Boxes"
+    node "Box slots"
+    node "Prices"
+    node "Payments" as paymentapi #$RISK
+    node "Promo codes" as promocodeapi #$RISK
+  }
+
+  component "Customer/Session Service" {
+    node "Session token"
+    node "Customers"
+  }
+}
+
+package "3rd party" {
+  component "Payment Provider: Stripe" as payment #$RISK
+  component "QR code generator" #$RISK
+  component "Email Provider: SES"
+  component "Drinks json" #$OUTSIDE
+}
+
+' PLAYMAKER
+playmaker --> playmakerapp
+
+' RECEPTION
+receptionist --> reception
+reception --> bookingapi
+
+' BOOKING WEBSITE
+customer --> booknow
+booknow --> bookingapi
+
+' KIOSK
+customer --> kiosk
+kiosk --> bookingapi
+
+' EVENTS
+events ---> bookingapi
+
+
+' OTHER
+paymentapi --> payment
+promocodeapi --> payment
+@enduml
