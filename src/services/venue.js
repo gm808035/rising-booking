@@ -19,16 +19,24 @@ const parseVenue = (venue) => ({
     section: b.BoxSection.name,
   })),
 });
+const headers = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Credentials": true,
+  "Access-Control-Allow-Headers": "*",
+  "Content-Type": "application/json",
+};
+const getAll = async () => 
+baseService(async (sequelize) => {
+  console.log(11111111);
+  const { Venue } = await db(sequelize);
+  console.log(22);
+  const venues = await Venue.findAll();
+  console.log(333);
 
-const getAll = async () =>
-  baseService(async (sequelize) => {
-    const { Venue } = await db(sequelize);
-    const venues = await Venue.findAll();
-
-    return {
-      body: venues.map(parseVenueList),
-    };
-  });
+  return {
+    body: venues.map(parseVenueList),
+  };
+});
 
 const getByCode = async (event) =>
   baseService(async (sequelize) => {
