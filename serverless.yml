@@ -1,6 +1,6 @@
 org: wildmint
 app: rising-booking
-service: rising-booking-test
+service: rising
 
 provider:
   name: aws
@@ -9,67 +9,46 @@ provider:
     restApi: true
     httpApi: true
   region: eu-west-2
-  stage: dev
+  stage: test
   environment:
     DB_USERNAME: admin
     # decrypt at deploy time, not recommended
     DB_PASSWORD: adminpassword
     DB_DATABASE: public
-    DB_HOST: database-1.cphbxirypjco.eu-west-2.rds.amazonaws.com
+    DB_HOST: bookingdb.clsqn4t14juo.eu-west-2.rds.amazonaws.com
     # Sentry https://docs.sentry.io/product/integrations/aws-lambda/#serverless-framework
     SENTRY_TRACES_SAMPLE_RATE: "1.0"
   # vpc:
-  #   securityGroupIds:
-  #     - sg-008713b20bd431425
-    # subnetIds: arn:aws:ec2:eu-west-2:24s5513588317:subnet/subnet-06c6762372e1182a2
+    securityGroupIds:
+      - sg-008713b20bd431425
+    subnetIds: arn:aws:ec2:eu-west-2:24s5513588317:subnet/subnet-06c6762372e1182a2
   iam:
     role:
-      - arn:aws:iam::245513588317:role/rising-booking
+      - arn:aws:iam::226001627197:role/rising-booking
 
 custom:
   serverless-offline:
     host: 0.0.0.0
 
 functions:
-  currentTime:
-    handler: handler.endpoint
-    events:
-      - http:
-          path: /pong
-          method: get
-  health:
-    handler: src/functions/health.handler
-    events:
-      - http:
-          path: /health
-          method: get
   getVenueByCode:
     handler: src/functions/venue.getByCodeHandler
     events:
       - http:
           path: /venues/{code}
           method: get
-          cors: true
   getVenue:
     handler: src/functions/venue.getAllHandler
     events:
       - http:
           path: /venues
           method: get
-          cors: true
   postPeakTimes:
     handler: src/functions/peakTimes.createHandler
     events:
       - http:
           path: /peakTimes/{schedule}
           method: post
-          cors: true
-  patchPeakTimes:
-    handler: src/functions/peakTimes.updatePeakHandler
-    events:
-      - http:
-          path: /peakTimes/{schedule}
-          method: patch
           cors: true
   deletePeakTimes:
     handler: src/functions/peakTimes.deleteHandler
@@ -78,21 +57,6 @@ functions:
           path: /peakTimes/{schedule}
           method: delete
           cors: true
-  #SMS
-  patchBoxSlot:
-    handler: src/functions/boxSlots.updateHandler
-    events:
-      - http:
-          path: /boxSlots/{id}
-          method: patch
-          cors: true
-  patchLinkedBoxSlot:
-    handler: src/functions/boxSlots.updateHandlerLinkedSlot
-    events:
-      - http:
-          path: /boxSlots/link/{id}
-          method: patch
-          cors: true
   createBoxSlot:
     handler: src/functions/boxSlots.createHandler
     events:
@@ -100,7 +64,7 @@ functions:
           path: /boxSlots
           method: post
           cors: true
-          private: true
+           
   createBoxSlotsLinked:
     handler: src/functions/boxSlots.createLinkedHandler
     events:
@@ -108,7 +72,7 @@ functions:
           path: /boxSlots/link
           method: post
           cors: true
-          private: true
+           
   filterBoxSlot:
     handler: src/functions/boxSlots.filterHandler
     events:
@@ -116,23 +80,6 @@ functions:
           path: /boxSlots/filter
           method: post
           cors: true
-          private: true
-  deleteBoxSlot:
-    handler: src/functions/boxSlots.deleteHandler
-    events:
-      - http:
-          path: /boxSlots/delete
-          method: post
-          cors: true
-          private: true
-  deleteBoxSlotLinked:
-    handler: src/functions/boxSlots.deleteLinkedSlot
-    events:
-      - http:
-          path: /boxSlots/link/delete
-          method: post
-          cors: true
-          private: true
   #SMS Schedule
   getScheduleByDateHandler:
     handler: src/functions/schedule.getScheduleByDateHandler
@@ -141,7 +88,7 @@ functions:
           path: /schedule/{venue}/{date}
           method: get
           cors: true
-          private: true
+           
   createSchedule:
     handler: src/functions/schedule.createScheduleHandler
     events:
@@ -149,7 +96,7 @@ functions:
           path: /schedule/{venue}
           method: post
           cors: true
-          private: true
+           
   applySchedule:
     handler: src/functions/schedule.applyScheduleHandler
     events:
@@ -157,7 +104,7 @@ functions:
           path: /apply/schedule/{venue}/{schedule}
           method: post
           cors: true
-          private: true
+           
   applyScheduleAvailability:
     handler: src/functions/schedule.availabilityScheduleHandler
     events:
@@ -165,7 +112,7 @@ functions:
           path: /apply/schedule/availability/{venue}/{schedule}
           method: post
           cors: true
-          private: true
+           
   filterSchedule:
     handler: src/functions/schedule.filterScheduleHandler
     events:
@@ -173,23 +120,6 @@ functions:
           path: /schedule/filter/{venueId}
           method: get
           cors: true
-          private: true
-  deleteSchedule:
-    handler: src/functions/schedule.deleteScheduleHandler
-    events:
-      - http:
-          path: /schedule/type/{id}
-          method: delete
-          cors: true
-          private: true
-  updateSchedule:
-    handler: src/functions/schedule.updateScheduleHandler
-    events:
-      - http:
-          path: /schedule/type/{id}
-          method: patch
-          cors: true
-          private: true
   getScheduleByIdHandler:
     handler: src/functions/schedule.getScheduleByIdHandler
     events:
@@ -197,7 +127,7 @@ functions:
           path: /schedule/type/{id}
           method: get
           cors: true
-          private: true
+           
   copyScheduleById:
     handler: src/functions/schedule.copyScheduleByIdHandler
     events:
@@ -205,7 +135,7 @@ functions:
           path: /schedule/type/{id}
           method: post
           cors: true
-          private: true
+           
   #SMS recurrence
   patchRecurrence:
     handler: src/functions/recurrence.updateHandler
@@ -214,7 +144,7 @@ functions:
           path: /recurrences/{schedule}
           method: patch
           cors: true
-          private: true
+           
   postRecurrence:
     handler: src/functions/recurrence.createHandler
     events:
@@ -222,7 +152,7 @@ functions:
           path: /recurrences/{schedule}
           method: post
           cors: true
-          private: true
+           
   patchOpenTime:
     handler: src/functions/openTimes.updateHandler
     events:
@@ -230,7 +160,7 @@ functions:
           path: /openTime/{schedule}/{openTimeId}
           method: patch
           cors: true
-          private: true
+           
 
 # service: toca-booking-api
 
